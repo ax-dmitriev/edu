@@ -6,7 +6,7 @@ con = sqlite3.connect("db.db")
 cursor = con.cursor()
 
 #! Добавление нового пользователя
-cursor.execute("INSERT INTO Users (username, email, age) VALUES (?, ?, ?)", ("newuser", "us1@ya.ru", 28))
+cursor.execute("UPDATE Users SET age = ? WHERE username = ?", (29, "newuser"))
 
 #! Сохранение изменений и закрытие соединения
 con.commit()
