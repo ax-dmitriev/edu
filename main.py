@@ -5,19 +5,31 @@ import sqlite3
 con = sqlite3.connect("db.db")
 cursor = con.cursor()
 
-##cursor.execute("INSERT INTO Users (username, email, age) VALUES (?, ?, ?)", ("newuser1", "us1@ya.ru", 28))
-##cursor.execute("INSERT INTO Users (username, email, age) VALUES (?, ?, ?)", ("newuser2", "us2@ya.ru", 29))
-##cursor.execute("INSERT INTO Users (username, email, age) VALUES (?, ?, ?)", ("newuser3", "us3@ya.ru", 30))
-##cursor.execute("INSERT INTO Users (username, email, age) VALUES (?, ?, ?)", ("newuser4", "us4@ya.ru", 31))
-##cursor.execute("INSERT INTO Users (username, email, age) VALUES (?, ?, ?)", ("newuser5", "us5@ya.ru", 32))
 
-#! Запрос
-cursor.execute("SELECT * FROM Users")
-users = cursor.fetchall()
+###! Выбираем имена и возраст юзеров старше 25 лет
+##cursor.execute("SELECT username, age FROM Users WHERE age > ?", (25,))
+##res = cursor.fetchall()
+##for row in res:
+##    print(row)
+        
+###! Средний возраст для каждого возраста
+##cursor.execute("SELECT age, AVG(age) FROM Users GROUP BY age")
+##res1 = cursor.fetchall()
+##for row in res1:
+##    print(row)
+###! Фильтр по среднему более 30 лет
+##cursor.execute("SELECT age, AVG(age) FROM Users GROUP BY age HAVING AVG(age) > ?", (30,))
+##res2 = cursor.fetchall()
+##for row in res2:
+##    print(row)
 
-for user in users:
-    print(user)
+#! Выбор и сортировка по возрасту по убыванию
+cursor.execute("SELECT username, age FROM Users ORDER BY age DESC")
+res1 = cursor.fetchall()
+for row in res1:
+    print(row)
+
 
 #! Сохранение изменений и закрытие соединения
-con.commit()
+##con.commit()
 con.close()
