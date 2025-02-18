@@ -5,8 +5,8 @@ import sqlite3
 con = sqlite3.connect("db.db")
 cursor = con.cursor()
 
-#! Создание индекса для столбца email
-cursor.execute("CREATE INDEX idx_email ON Users (email)")
+#! Добавление нового пользователя
+cursor.execute("INSERT INTO Users (username, email, age) VALUES (?, ?, ?)", ("newuser", "us1@ya.ru", 28))
 
 #! Сохранение изменений и закрытие соединения
 con.commit()
