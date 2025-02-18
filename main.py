@@ -7,15 +7,11 @@ cursor = con.cursor()
 
 
 #! Наибольший возраст
-cursor.execute("""
-SELECT username, age
-FROM Users
-WHERE age = (SELECT MAX(age) FROM Users)
-""")
-oldtest_users = cursor.fetchall()
-
-for i in oldtest_users:
+cursor.execute("SELECT * FROM Users")
+users = cursor.fetchall()
+for i in users:
     print(i)
+
 
 #! Сохранение изменений и закрытие соединения
 ##con.commit()
