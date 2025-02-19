@@ -6,22 +6,23 @@ con = sqlite3.connect("db.db")
 cursor = con.cursor()
 
 
-#! Выбираем первого юзера
-cursor.execute("""SELECT * FROM Users""")
-first_user = cursor.fetchone()
-print(first_user)
-
-#! Выбираем первых двух юзера
-cursor.execute("""SELECT * FROM Users""")
-first_3_user = cursor.fetchmany(3)
-print(first_3_user)
-
 #! Выбираем всех юзера
 cursor.execute("""SELECT * FROM Users""")
-all_users = cursor.fetchall()
-print(all_users)
+users = cursor.fetchall()
 
+#! Словарь
+users_list = []
+for user in users:
+    user_dict = {
+        "id": user[0],
+        "username": user[1],
+        "email": user[2],
+        "age": user[3]
+    }
+    users_list.append(user_dict)
 
+for user in users_list:
+    print(user)
 
 #! Сохранение изменений и закрытие соединения
 ##con.commit()
