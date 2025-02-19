@@ -1,41 +1,3 @@
-###! Модуль
-##import sqlite3
-##
-###! Подключение, курсор
-##con = sqlite3.connect("db.db")
-##cursor = con.cursor()
-##
-###! Запрос
-##query = f"SELECT * FROM Users WHERE age > ?"
-##cursor.execute(query, (25,))
-##users = cursor.fetchall()
-##print(users)
-##
-##con.close()
-
-
-#! Модуль
-##import sqlite3
-##
-#! Подключение, курсор
-##con = sqlite3.connect("db.db")
-##cursor = con.cursor()
-##
-#! Запрос
-####query = f"SELECT * FROM Users WHERE age > ?"
-####cursor.execute(query, (25,))
-####users = cursor.fetchall()
-####print(users)
-##
-### Представление
-##cursor.execute("CREATE VIEW ActiveUsers AS SELECT * FROM Users WHERE is_active = 1")
-##cursor.execute("SELECT * FROM ActiveUsers")
-##active_users = cursor.fetchall()
-##print(active_users)
-##
-##con.close()
-
-
 #! Модуль
 import sqlite3
 
@@ -43,28 +5,43 @@ import sqlite3
 con = sqlite3.connect("db_2.db")
 cursor = con.cursor()
 
-###! Запрос
-##cursor.execute("""
-##CREATE TABLE IF NOT EXISTS Users (
-##id INTEGER PRIMARY KEY,
-##username TEXT NOT NULL,
-##email TEXT NOT NULL,
-##age INTEGER NOT NULL,
-##created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-##)
-##""")
-##
-###! Триггер
-##cursor.execute("""
-##CREATE TRIGGER IF NOT EXISTS update_created_at
-##AFTER INSERT ON Users
-##BEGIN
-##UPDATE Users SET created_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
-##END
-##""")
 
-#! Индекс
-cursor.execute("CREATE INDEX idx_username ON Users (username)")
+#! Создание таблицы - Tasks
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS Tasks (
+id INTEGER PRIMARY KEY,
+title TEXT NOT NULL,
+status TEXT DEFAULT 'Not started'
+)
+""")
 
-con.commit()
+#! Добавление новой задачи
+def add_task(title):
+    cursor.execute("INSERT INTO  Tasks (title) VALUES (?)", (title,))
+    con.commit()
+
+#! Обновление статуса задачи
+def update_task_status(task_id, status):
+    cursor.execute("UPDATE Tasks SET status = ? WHERE id = ?", (status, task_id))
+    con.commit()
+    
+#! Вывод списка задач
+def list_tasks():
+    cursor.execute("SELECT * FROM Tasks")
+    tasks = cursor.fetchall()
+    for task in tasks:
+        print(task)
+    
+#! Добавление новых задач
+add_task("Подготовить презентацию")
+add_task("Закончить отчёт")
+add_task("Приготовить ужин")
+
+#! Обновление статуса задач
+update_task_status(2, "In progress")
+
+#! Вывод списка задач
+list_tasks()
+
+#! Отключение
 con.close()
